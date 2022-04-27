@@ -4,3 +4,4 @@
 - Hardhat
 - Ethers.js
 - Solhint
+- Solidity-coverage

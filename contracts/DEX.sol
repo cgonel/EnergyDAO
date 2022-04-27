@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.13;
 
-import "./MightyToken.sol";
+import "./Token.sol";
 
 // interface IMightyToken is IERC20 {
 //     function mint(uint256 _value) external;
@@ -24,13 +24,9 @@ contract Dex is IDex{
         token = new MightyToken(10000);
     }
 
-    function buy(uint256 _value) external {
+    function buy(uint256 _value) external {}
 
-    }
-
-    function sell(uint256 _value) external {
-        
-    }
+    function sell(uint256 _value) external {}
 
 }
 // to vary supply, can burn/mint tokens when certain condition is met

@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.13;
 
-import "MightyToken.sol";
+import "./Token.sol";
 
 interface ITokenSale {
-    function buy(uint256) payable external;
+    function buy(uint256) external payable;
     function endSale() external;
 }
 
@@ -19,13 +19,9 @@ contract TokenSale is ITokenSale, Ownable {
         token = new MightyToken(_totalSupply);
     }
 
-    function buy(uint256) payable external{
+    function buy(uint256) external payable {}
 
-    }
-
-    function endSale() external onlyOwner{
-        
-    }
+    function endSale() external onlyOwner {}
 }
 
 // 100000000000000000000000
