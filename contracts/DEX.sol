@@ -16,17 +16,17 @@ interface IDex {
     event Sold(uint256);
 }
 
-contract Dex is IDex{
-    IERC20 public token;
-    uint256 public tokenValue = 1 gwei;
+// contract Dex is IDex{
+    // IERC20 public token;
+    // uint256 public tokenValue = 1 gwei;
 
-    constructor(){
-        token = new MightyToken(10000);
-    }
+    // constructor(){
+    //     token = new Token(10000);
+    // }
 
-    function buy(uint256 _value) external {}
+    // function buy(uint256 _value) external {}
 
-    function sell(uint256 _value) external {}
+    // function sell(uint256 _value) external {}
 
-}
+// }
 // to vary supply, can burn/mint tokens when certain condition is met

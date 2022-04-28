@@ -10,7 +10,7 @@ pragma solidity ^0.8.13;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract MightyToken is IERC20, Ownable {
+contract Token is IERC20, Ownable {
     string public name = "MightyToken";
     string public symbol = "MTN";
     uint8 public decimals = 18;
