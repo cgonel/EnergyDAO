@@ -2,26 +2,36 @@
 
 pragma solidity ^0.8.13;
 
-import "./Token.sol";
+// /**
+//     @author CGonel
+//     @title Crowdsale
+//     @notice The crowdsale will have a cap of _ and will last 72 hours. The early adopters that are whitelisted will be able to buy for the first 12 hours exclusively.
+// */
 
+// import "./Token.sol";
 
-contract TokenSale is Ownable {
-    IERC20 public token;
-    uint256 public price = 1 gwei;
+// contract TokenSale is Ownable {
+//     IERC20 public token;
+//     uint256 public price = 1 gwei;
 
-    constructor(uint256 _totalSupply){
-        token = new Token(_totalSupply);
-    }
+//     constructor(uint256 _totalSupply){
+//         token = new Token(_totalSupply);
+//     }
 
-    function buy(uint256 _amount) external payable {
-        // right amount sent
-        // send token
-        // require(msg.value)
-    }
+//     event Sold(address buyer, uint256 amount);
 
-    function endSale() external onlyOwner {
-        selfdestruct(msg.sender);
-    }
-}
+//     // whitelist
 
-// 100000000000000000000000
+//     function buy(uint256 _amount) external payable {
+//         // right amount sent
+//         require(msg.value == _amount * price, "Incorrect funds");
+//         // send token
+//         // require(msg.value)
+//     }
+
+//     function endSale() external onlyOwner {
+//         selfdestruct(msg.sender);
+//     }
+// }
+
+// // 100000000000000000000000
