@@ -20,7 +20,7 @@ describe("Deployment", async () => {
     })
 })
 
-describe.only("Whitelist", async () => {
+describe("Whitelist", async () => {
     it("should increase the amount of whitelisted addresses", async () => {
         await whitelist.addWhitelistedAddress();
         expect(await whitelist.numberWhitelistedAddr()).to.equal(1);
