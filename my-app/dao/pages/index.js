@@ -4,11 +4,13 @@ import styles from '../styles/Home.module.css'
 import { useState, useEffect } from 'react'
 import { ethers } from "ethers"
 import { WHITELIST_ADDRESS, abi } from '../constants/index'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home() {
   const [walletConnected, setWalletConnected] = useState(false)
   const [isWhitelisted, setIsWhitelisted] = useState()
-  const [nbWhitelisted, setNbWhitelisted] = useState(0)
+  const [nbWhitelisted, setNbWhitelisted] = useState()
   const [maxWhitelisted, setMaxWhitelisted] = useState()
   const [loading, setLoading] = useState(false)
   const [joinedWhitelist, setJoinedWhitelist] = useState(false)
@@ -38,7 +40,7 @@ export default function Home() {
     const whitelistContract = new ethers.Contract(WHITELIST_ADDRESS, abi, provider)
     const nbWhitelistedAddr = await whitelistContract.numberWhitelistedAddr()
     setNbWhitelisted(nbWhitelistedAddr)
-}
+  }
 
   const getMaxWhitelisted = async () => {
     const provider = await getProviderOrSigner()
@@ -70,15 +72,26 @@ export default function Home() {
     setWalletConnected(true)
   }
 
+  const notify = () => toast.success("Succesfully joined the Whitelist!");
+
   const joinWhitelist = async () => {
+    const signer = await getProviderOrSigner(true)
     const whitelistContract = new ethers.Contract(WHITELIST_ADDRESS, abi, signer)
-    const tx = whitelistContract.addWhitelistedAddress()
+    const tx = await whitelistContract.addWhitelistedAddress()
     setLoading(true)
     await tx.wait()
     setLoading(false)
     setJoinedWhitelist(true)
+    notify()
   }
 
+  useEffect(() => {
+    setNbWhitelisted(prevNb => (
+      prevNb++
+    ))
+  }, [joinedWhitelist])
+
+  // returns button element based on if wallet is connected, is the user already whitelisted or is the whitelist done
   const getButton = () => {
     if (!walletConnected) {
       return ( 
@@ -91,13 +104,20 @@ export default function Home() {
           </button>
       )
     } else if (isWhitelisted || joinedWhitelist) {
-
+      return ( 
+        <div>Thanks for joining the Whitelist!</div>
+      )
     } else if (loading) {
-
+      return ( 
+        <button type="button" className="btn btn-success">
+          Loading...
+        </button>
+      )
     } else if (maxWhitelisted = nbWhitelisted) {
-
+      return ("")
     } else {
-      return ( <button 
+      return ( 
+          <button 
             type="button" 
             className="btn btn-success"
             onClick={joinWhitelist}
@@ -116,16 +136,18 @@ export default function Home() {
         <link rel="icon" href="/logo.png" />
         {/* <a href="https://www.flaticon.com/free-icons/environment" title="environment icons">Environment icons created by Freepik - Flaticon</a> */}
       </Head>
+      <ToastContainer />
       <nav className={styles.nav}>
         <img src="/logo.png" alt="energydao-logo" />
         {/* <a href="https://www.flaticon.com/free-icons/environment" title="environment icons">Environment icons created by Freepik - Flaticon</a> */}
       </nav>
       <main className={`container ${styles.main}`}>
+
         <div className="row align-items-md-center justify-content-sm-center">
           <div className="col">
             <h1>Welcome to EnergyDAO!</h1>
             <p>The whitelist will grant you early access to our NFT Collection launch.</p>
-            { walletConnected && <p>There is {nbWhitelisted} / {maxWhitelisted} spots left</p>}
+            { walletConnected && <p>There's {maxWhitelisted - nbWhitelisted} spots left</p>}
             <div>
               {getButton()}
             </div>

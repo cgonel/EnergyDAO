@@ -16,6 +16,7 @@ EnergyDAO's goal is to make renewable energy the main source of the world's elec
 - Metamask
 - Next.js
 - Bootstrap
+- React-toastify
 - Solhint
 - Solidity-coverage
 
