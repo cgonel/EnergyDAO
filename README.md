@@ -17,8 +17,9 @@ EnergyDAO's goal is to make renewable energy the main source of the world's elec
 - Next.js
 - Bootstrap
 - React-toastify
-- Solhint
-- Solidity-coverage
+- Alchemy
+<!-- - Solhint
+- Solidity-coverage -->
 
 ### References
 [Reference - Why Are Fossil Fuels Bad for the Environment?](https://www.reference.com/science/fossil-fuels-bad-environment-ed81a473564fab02)

@@ -18,12 +18,16 @@ export default function Home() {
   const getProviderOrSigner = async (needSigner = false) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
+    const {chainId} = await provider.getNetwork();
+    if (chainId !== 4) {
+      window.alert("Change the network to Rinkeby");
+    }
     return needSigner ? signer : provider
   }
 
   const isWalletConnected = async () => {
-    const signer = await getProviderOrSigner(true)
     try {
+      const signer = await getProviderOrSigner(true)
       await signer.getAddress()
       setWalletConnected(true)
     } catch (err) {
@@ -33,29 +37,41 @@ export default function Home() {
 
   useEffect(() => {
     isWalletConnected()
-  }, [])
+  })
 
   const getNbWhitelisted = async () => {
-    const provider = await getProviderOrSigner()
-    const whitelistContract = new ethers.Contract(WHITELIST_ADDRESS, abi, provider)
-    const nbWhitelistedAddr = await whitelistContract.numberWhitelistedAddr()
-    setNbWhitelisted(nbWhitelistedAddr)
+    try {
+      const provider = await getProviderOrSigner()
+      const whitelistContract = new ethers.Contract(WHITELIST_ADDRESS, abi, provider)
+      const nbWhitelistedAddr = await whitelistContract.numberWhitelistedAddr()
+      setNbWhitelisted(nbWhitelistedAddr)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const getMaxWhitelisted = async () => {
-    const provider = await getProviderOrSigner()
-    const whitelistContract = new ethers.Contract(WHITELIST_ADDRESS, abi, provider)
-    const maxNbWhitelisted = await whitelistContract.maxWhitelistedAddr()
-    setMaxWhitelisted(maxNbWhitelisted)
+    try {
+      const provider = await getProviderOrSigner()
+      const whitelistContract = new ethers.Contract(WHITELIST_ADDRESS, abi, provider)
+      const maxNbWhitelisted = await whitelistContract.maxWhitelistedAddr()
+      setMaxWhitelisted(maxNbWhitelisted)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const isAddressWhitelisted = async () => {
-    const provider = await getProviderOrSigner()
-    const signer = await getProviderOrSigner(true)
-    const account = await signer.getAddress()
-    const whitelistContract = new ethers.Contract(WHITELIST_ADDRESS, abi, provider)
-    const isWhitelisted = await whitelistContract.whitelistedAddrs(account)
-    setIsWhitelisted(isWhitelisted)
+    try {
+      const provider = await getProviderOrSigner()
+      const signer = await getProviderOrSigner(true)
+      const account = await signer.getAddress()
+      const whitelistContract = new ethers.Contract(WHITELIST_ADDRESS, abi, provider)
+      const isWhitelisted = await whitelistContract.whitelistedAddrs(account)
+      setIsWhitelisted(isWhitelisted)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   useEffect(() => {
@@ -75,14 +91,18 @@ export default function Home() {
   const notify = () => toast.success("Succesfully joined the Whitelist!");
 
   const joinWhitelist = async () => {
-    const signer = await getProviderOrSigner(true)
-    const whitelistContract = new ethers.Contract(WHITELIST_ADDRESS, abi, signer)
-    const tx = await whitelistContract.addWhitelistedAddress()
-    setLoading(true)
-    await tx.wait()
-    setLoading(false)
-    setJoinedWhitelist(true)
-    notify()
+    try {
+      const signer = await getProviderOrSigner(true)
+      const whitelistContract = new ethers.Contract(WHITELIST_ADDRESS, abi, signer)
+      const tx = await whitelistContract.addWhitelistedAddress()
+      setLoading(true)
+      await tx.wait()
+      setLoading(false)
+      setJoinedWhitelist(true)
+      notify()
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   useEffect(() => {
@@ -113,7 +133,7 @@ export default function Home() {
           Loading...
         </button>
       )
-    } else if (maxWhitelisted = nbWhitelisted) {
+    } else if (maxWhitelisted == nbWhitelisted) {
       return ("")
     } else {
       return ( 
@@ -142,7 +162,6 @@ export default function Home() {
         {/* <a href="https://www.flaticon.com/free-icons/environment" title="environment icons">Environment icons created by Freepik - Flaticon</a> */}
       </nav>
       <main className={`container ${styles.main}`}>
-
         <div className="row align-items-md-center justify-content-sm-center">
           <div className="col">
             <h1>Welcome to EnergyDAO!</h1>
