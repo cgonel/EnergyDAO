@@ -10,6 +10,9 @@ EnergyDAO's goal is to make renewable energy the main source of the world's elec
 
 ---
 
+### Contracts
+Whitelist: 0xB245608616641041876f3a9589576881337FE65D
+
 ### Technologies Used
 - Hardhat
 - Ethers.js
