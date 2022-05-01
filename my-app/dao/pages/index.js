@@ -166,7 +166,7 @@ export default function Home() {
           <div className="col">
             <h1>Welcome to EnergyDAO!</h1>
             <p>The whitelist will grant you early access to our NFT Collection launch.</p>
-            { walletConnected && <p>There's {maxWhitelisted - nbWhitelisted} spots left</p>}
+            { walletConnected && <p>{`There's ${maxWhitelisted - nbWhitelisted} spots left`}</p>}
             <div>
               {getButton()}
             </div>
