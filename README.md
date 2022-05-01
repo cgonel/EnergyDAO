@@ -13,6 +13,7 @@ EnergyDAO's goal is to make renewable energy the main source of the world's elec
 ### Technologies Used
 - Hardhat
 - Ethers.js
+- Metamask
 - Next.js
 - Bootstrap
 - Solhint
