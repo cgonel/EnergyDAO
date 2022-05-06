@@ -30,29 +30,39 @@ contract NFTCollection is ERC721Enumerable, ERC721URIStorage, Ownable {
     uint8 public salePrice;
     uint8 public maxTokens = 20;
 
-
+    /// @notice sets the name, symbol of the NFT Collection
+    /// @param _address address of the whitelist contract
     constructor(address _address) ERC721("Bioengineered Animals","BEA"){
         whitelistContract = IWhitelist(_address);
     }
 
+    /// @notice sets if contract is paused or not
+    /// @param _contractState bool to indicate the state of the contract
     function setPaused(bool _contractState) external onlyOwner {
         paused = _contractState;
     }
 
+    /// @notice requires contract to not be paused
     modifier onlyWhenNotPaused() {
         require(!paused, "Contract is paused");
         _;
     }
 
+    /// @notice starts the presale and sets an end time
     function startPresale() external onlyOwner {
         presaleStarted = true;
         presaleEnd = uint64(block.timestamp + 12 hours);
     }
 
+    /// @notice returns the baseURI of the token URI
+    /// @return string the baseURI
     function _baseURI() internal pure override returns (string memory) {
         return "ipfs://QmVDtQQPrask7VcchbFUHioEecKwGZoszpeCRmpuQnE9jh/";
     }
 
+    /// @notice find the URI of the token
+    /// @param _tokenId the id of the token desired
+    /// @return string URI where the token's metadata can be found
     function tokenURI(uint256 _tokenId) public view virtual override(ERC721, ERC721URIStorage) returns (string memory) {
         require(_exists(_tokenId), "ERC721URIStorage: URI query for nonexistent token");
 
@@ -61,6 +71,7 @@ contract NFTCollection is ERC721Enumerable, ERC721URIStorage, Ownable {
         return bytes(base).length > 0 ? string(abi.encodePacked(base, _tokenId.toString(), ".json")) : "";
     }
 
+    /// @notice mint an NFT during the presale
     function presaleMint() external payable onlyWhenNotPaused {
         require(presaleStarted, "Presale hasn't started");
         require(block.timestamp < presaleEnd, "Presale has ended");
@@ -71,6 +82,7 @@ contract NFTCollection is ERC721Enumerable, ERC721URIStorage, Ownable {
         _safeMint(msg.sender, tokenId.current());
     }
 
+    /// @notice mint an NFT
     function saleMint() external payable onlyWhenNotPaused {
         require(msg.value == presalePrice, "Incorrect amount");
         require(tokenId.current() != maxTokens, "All the NFTs have been minted");
@@ -78,6 +90,7 @@ contract NFTCollection is ERC721Enumerable, ERC721URIStorage, Ownable {
         _safeMint(msg.sender, tokenId.current());
     }
 
+    /// @notice withdraw the funds from the contract
     function withdraw() external onlyOwner {
         (bool success, ) = payable(msg.sender).call{value:address(this).balance}("");
         require(success, "Failed withdrawal");
