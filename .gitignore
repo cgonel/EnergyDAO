@@ -5,6 +5,7 @@ coverage
 coverage.json
 typechain
 .vscode
+nft-collection
 
 #Hardhat files
 cache
