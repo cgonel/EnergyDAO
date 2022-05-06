@@ -23,17 +23,19 @@ contract NFTCollection is ERC721Enumerable, ERC721URIStorage, Ownable {
 
     Counters.Counter private tokenId;
 
-    bool paused;
+    bool public paused;
     bool public presaleStarted;
     uint64 public presaleEnd;
-    uint8 public presalePrice;
-    uint8 public salePrice;
     uint8 public maxTokens = 20;
+    uint256 public presalePrice = 0.005 ether;
+    uint256 public salePrice = 0.01 ether;
+    string baseTokenURI;
 
     /// @notice sets the name, symbol of the NFT Collection
     /// @param _address address of the whitelist contract
-    constructor(address _address) ERC721("Bioengineered Animals","BEA"){
+    constructor(address _address, string memory _baseTokenURI) ERC721("Bioengineered Animals","BEA"){
         whitelistContract = IWhitelist(_address);
+        baseTokenURI = _baseTokenURI;
     }
 
     /// @notice sets if contract is paused or not
@@ -56,8 +58,8 @@ contract NFTCollection is ERC721Enumerable, ERC721URIStorage, Ownable {
 
     /// @notice returns the baseURI of the token URI
     /// @return string the baseURI
-    function _baseURI() internal pure override returns (string memory) {
-        return "ipfs://QmVDtQQPrask7VcchbFUHioEecKwGZoszpeCRmpuQnE9jh/";
+    function _baseURI() internal view override returns (string memory) {
+        return baseTokenURI;
     }
 
     /// @notice find the URI of the token
@@ -84,7 +86,8 @@ contract NFTCollection is ERC721Enumerable, ERC721URIStorage, Ownable {
 
     /// @notice mint an NFT
     function saleMint() external payable onlyWhenNotPaused {
-        require(msg.value == presalePrice, "Incorrect amount");
+        require(presaleStarted && block.timestamp >= presaleEnd, "Presale still in progress");
+        require(msg.value == salePrice, "Incorrect amount");
         require(tokenId.current() != maxTokens, "All the NFTs have been minted");
         tokenId.increment();
         _safeMint(msg.sender, tokenId.current());
