@@ -14,3 +14,9 @@
 .main img {
     height: 400px;
 }
+
+.banner {
+    height: 40px;
+    background-color: #09a66d;
+    color: #fff;
+}

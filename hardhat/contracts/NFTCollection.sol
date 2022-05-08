@@ -27,6 +27,7 @@ contract NFTCollection is ERC721Enumerable, ERC721URIStorage, Ownable {
     bool public presaleStarted;
     uint64 public presaleEnd;
     uint8 public maxTokens = 20;
+    uint8 public nftMinted;
     uint256 public presalePrice = 0.005 ether;
     uint256 public salePrice = 0.01 ether;
     string baseTokenURI;
@@ -80,6 +81,7 @@ contract NFTCollection is ERC721Enumerable, ERC721URIStorage, Ownable {
         require(whitelistContract.whitelistedAddrs(msg.sender), "Can't buy during presale");
         require(msg.value == presalePrice, "Incorrect amount");
         require(tokenId.current() < maxTokens, "All the NFTs have been minted");
+        nftMinted++;
         tokenId.increment();
         _safeMint(msg.sender, tokenId.current());
     }
@@ -89,6 +91,7 @@ contract NFTCollection is ERC721Enumerable, ERC721URIStorage, Ownable {
         require(presaleStarted && block.timestamp >= presaleEnd, "Presale still in progress");
         require(msg.value == salePrice, "Incorrect amount");
         require(tokenId.current() < maxTokens, "All the NFTs have been minted");
+        nftMinted++;
         tokenId.increment();
         _safeMint(msg.sender, tokenId.current());
     }

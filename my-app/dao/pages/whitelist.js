@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Whitelist.module.css'
 import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
-import { WHITELIST_ADDRESS, abi } from '../constants/index'
+import { WHITELIST_ADDRESS, abi } from '../constants/whitelistConstants'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,6 +15,7 @@ export default function Whitelist() {
     const [loading, setLoading] = useState(false)
     const [joinedWhitelist, setJoinedWhitelist] = useState(false)
   
+    // returns provider or signer based on bool passed
     const getProviderOrSigner = async (needSigner = false) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
@@ -74,6 +75,7 @@ export default function Whitelist() {
       }
     }
   
+    // get informations when wallet is connected
     useEffect(() => {
       if (walletConnected) {
         getNbWhitelisted() 
