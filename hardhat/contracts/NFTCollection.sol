@@ -76,10 +76,10 @@ contract NFTCollection is ERC721Enumerable, ERC721URIStorage, Ownable {
     /// @notice mint an NFT during the presale
     function presaleMint() external payable onlyWhenNotPaused {
         require(presaleStarted, "Presale hasn't started");
-        require(block.timestamp < presaleEnd, "Presale has ended");
+        require(block.timestamp <= presaleEnd, "Presale has ended");
         require(whitelistContract.whitelistedAddrs(msg.sender), "Can't buy during presale");
         require(msg.value == presalePrice, "Incorrect amount");
-        require(tokenId.current() != maxTokens, "All the NFTs have been minted");
+        require(tokenId.current() < maxTokens, "All the NFTs have been minted");
         tokenId.increment();
         _safeMint(msg.sender, tokenId.current());
     }
@@ -88,7 +88,7 @@ contract NFTCollection is ERC721Enumerable, ERC721URIStorage, Ownable {
     function saleMint() external payable onlyWhenNotPaused {
         require(presaleStarted && block.timestamp >= presaleEnd, "Presale still in progress");
         require(msg.value == salePrice, "Incorrect amount");
-        require(tokenId.current() != maxTokens, "All the NFTs have been minted");
+        require(tokenId.current() < maxTokens, "All the NFTs have been minted");
         tokenId.increment();
         _safeMint(msg.sender, tokenId.current());
     }
