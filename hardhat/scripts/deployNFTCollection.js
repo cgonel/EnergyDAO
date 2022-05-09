@@ -1,6 +1,7 @@
 const { ethers } = require("hardhat");
 
-const IWHITELIST_ADDRESS = "0xB245608616641041876f3a9589576881337FE65D";
+// const IWHITELIST_ADDRESS = "0xB245608616641041876f3a9589576881337FE65D";
+const IWHITELIST_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 const baseURI = "ipfs://QmVDtQQPrask7VcchbFUHioEecKwGZoszpeCRmpuQnE9jh/";
 
 async function main() {

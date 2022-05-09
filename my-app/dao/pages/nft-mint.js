@@ -2,14 +2,19 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Whitelist.module.css'
 import { useState, useEffect } from 'react'
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import { NFTCOLLECTION_ADDRESS, abi } from '../constants/nftCollectionConstants'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function NFTMint() {
     const [walletConnected, setWalledConnected] = useState(false)
     const [presaleStarted, setPresaleStarted] = useState()
+    const [presaleEnded, setPresaleEnded] = useState()
+    const [isOwner, setIsOwner] = useState(false)
     const [timeLeftPresale, setTimeLeftPresale] = useState()
     const [mintedNFTs, setMintedNFTs] = useState()
+    const [loading, setLoading] = useState()
 
     const getProviderOrSigner = async (needSigner = false) => {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -36,8 +41,13 @@ export default function NFTMint() {
     })
 
     const connectWallet = async () => {
+      try {
         const provider = await getProviderOrSigner()
         await provider.send("eth_requestAccounts", [])
+        setWalledConnected(true)
+      } catch (err) {
+        console.error(err)
+      }
     }
 
     const isPresaleStarted = async () => {
@@ -46,6 +56,34 @@ export default function NFTMint() {
         const nftContract = new ethers.Contract(NFTCOLLECTION_ADDRESS, abi, provider)
         const presaleStarted = await nftContract.presaleStarted()
         setPresaleStarted(presaleStarted)
+        presaleStarted ? isPresaleEnded() : isConnectedOwner()
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    const isPresaleEnded = async () => {
+      try {
+        const provider = await getProviderOrSigner()
+        const nftContract = new ethers.Contract(NFTCOLLECTION_ADDRESS, abi, provider)
+        const { _hex  } = await nftContract.presaleEnd()
+        let presaleEnd = Number(_hex)
+        presaleEnd = new Date(presaleEnd * 1000)
+        const currentTime = new Date()
+        setPresaleEnded(currentTime > presaleEnd ? true : false)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    const isConnectedOwner = async () => {
+      try {
+        const provider = await getProviderOrSigner()
+        const signer = await getProviderOrSigner(true)
+        const nftContract = new ethers.Contract(NFTCOLLECTION_ADDRESS, abi, provider)
+        const owner = await nftContract.owner()
+        const connectedAddress = await signer.getAddress()
+        owner == connectedAddress ? setIsOwner(true) : setIsOwner(false)
       } catch (err) {
         console.error(err)
       }
@@ -69,25 +107,123 @@ export default function NFTMint() {
       }
     }, [walletConnected])
 
+    const notifyPresaleStarted = () => toast.success("Presale started successfully")
+
+    const startPresale = async () => {
+      try {
+        const signer = await getProviderOrSigner(true)
+        const nftContract = new ethers.Contract(NFTCOLLECTION_ADDRESS, abi, signer)
+        const tx = await nftContract.startPresale()
+        setLoading(true)
+        await tx.wait()
+        setLoading(false)
+        setPresaleStarted(true)
+        notifyPresaleStarted()
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
     const timeUntilEndPresale = async () => {
       try {
         const provider = await getProviderOrSigner()
         const nftContract = new ethers.Contract(NFTCOLLECTION_ADDRESS, abi, provider)
-        const endPresale = await nftContract.presaleEnd()
+        const {_hex} = await nftContract.presaleEnd()
+        const endPresale = Number("0x627a040a")
         // const date = (new Date()).getTime()
-        const date = new Date()
+        const date = new Date().getTime()
         const timeLeft = new Date(endPresale - date)
-        console.log(timeLeft.getHours())
+        // console.log(date)
+        // console.log(_hex)
+        console.log(endPresale - date)
+        console.log(timeLeft)
+        // console.log(timeLeft.getHours())
       } catch (err) {
         console.error(err)
       }
     }
 
     useEffect(() => {
-      // if (presaleStarted) {
+      if (presaleStarted && !presaleEnded) {
         timeUntilEndPresale()
-      // }
+      }
     }, [presaleStarted])
+
+    const notifyMint = () => toast.success("Successfully minted a Bioengineered Animal NFT")
+
+    const presaleMint = async () => {
+      try {
+        const signer = await getProviderOrSigner(true)
+        const nftContract = new ethers.Contract(NFTCOLLECTION_ADDRESS, abi, signer)
+        const tx = await nftContract.presaleMint({value: ethers.utils.parseEther("0.005")})
+        setLoading(true)
+        await tx.wait()
+        setLoading(false)
+        notifyMint()
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    const mint = async () => {
+      try {
+        const signer = await getProviderOrSigner(true)
+        const nftContract = new ethers.Contract(NFTCOLLECTION_ADDRESS, abi, signer)
+        const tx = await nftContract.saleMint({value: ethers.utils.parseEther("0.01")})
+        setLoading(true)
+        await tx.wait()
+        setLoading(false)
+        notifyMint()
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    const getButton = () => {
+      if (!walletConnected) {
+        return (
+          <button 
+            type="button" 
+            className="btn btn-primary" 
+            onClick={connectWallet}
+          >
+            Connect Wallet
+          </button>
+        )
+      } else if (!presaleStarted && isOwner) {
+        return (
+          <button 
+            type="button" 
+            className="btn btn-warning" 
+            onClick={startPresale}
+          >
+            Start Presale
+          </button>
+        )
+      } else if (loading) {
+        return (
+          <button type="button" className="btn btn-secondary">Loading...</button>
+        )
+      } else if (presaleStarted && !presaleEnded) {
+        return (
+          <button 
+            type="button" 
+            className="btn btn-success"
+            onClick={presaleMint}
+          >
+            Mint
+          </button>
+        )
+      } else if (presaleStarted && presaleEnded) {
+        <button 
+          type="button" 
+          className="btn btn-success"
+          onClick={mint}
+        >
+          Mint
+        </button>
+      }
+    }
 
     return (
         <div>
@@ -97,8 +233,9 @@ export default function NFTMint() {
             <link rel="icon" href="/logo.png" />
             {/* <a href="https://www.flaticon.com/free-icons/environment" title="environment icons">Environment icons created by Freepik - Flaticon</a> */}
           </Head>
-          {/* <ToastContainer /> */}
-          {<div className={`${styles.banner} fw-bold d-flex align-items-center justify-content-center`}>Presale ends in X hours</div>}
+          {/* <button onClick={notifyPresaleStarted}>Notify!</button> */}
+          <ToastContainer />
+          {<div className={`${styles.banner} fw-bold d-flex align-items-center justify-content-center`}>Presale ends in {timeLeftPresale} hours</div>}
           <nav className={styles.nav}>
             <img src="/logo.png" alt="energydao-logo" />
             {/* <a href="https://www.flaticon.com/free-icons/environment" title="environment icons">Environment icons created by Freepik - Flaticon</a> */}
@@ -110,7 +247,7 @@ export default function NFTMint() {
               <p>This NFT collection showcases what Earth would look like without biodiversity.</p>
               { walletConnected && <p>{`${mintedNFTs}/20 have been minted`}</p>}
               <div>
-                <button type="button" className="btn btn-primary" onClick={connectWallet}>Connect Wallet</button>
+                {getButton()}
               </div>
             </div>
             <div className="col mt-sm-5 Smt-md-0">
