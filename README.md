@@ -19,7 +19,7 @@ Deployed: 0xB245608616641041876f3a9589576881337FE65D
 ### NFT Collection
 Mint 20 unique NFTs. The whitelisted addresses get a presale with a reduced price and a guaranteed NFT.
 
-Deployed:
+Deployed: 0x2c25d88920D2bd4D93317F3738998460EFE1efD7
 
 ---
 ### Technologies Used

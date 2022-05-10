@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Whitelist.module.css'
+import styles from '../styles/Dao.module.css'
+import Nav from './Components/Nav'
 import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 import { WHITELIST_ADDRESS, abi } from '../constants/whitelistConstants'
@@ -159,10 +160,7 @@ export default function Whitelist() {
           {/* <a href="https://www.flaticon.com/free-icons/environment" title="environment icons">Environment icons created by Freepik - Flaticon</a> */}
         </Head>
         <ToastContainer />
-        <nav className={styles.nav}>
-          <img src="/logo.png" alt="energydao-logo" />
-          {/* <a href="https://www.flaticon.com/free-icons/environment" title="environment icons">Environment icons created by Freepik - Flaticon</a> */}
-        </nav>
+        <Nav />
         <main className={`container ${styles.main}`}>
           <div className="row align-items-md-center justify-content-sm-center">
             <div className="col">

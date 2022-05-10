@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Whitelist.module.css'
+import styles from '../styles/Dao.module.css'
+import Nav from './Components/Nav'
 import { useState, useEffect } from 'react'
 import { BigNumber, ethers } from 'ethers'
 import { NFTCOLLECTION_ADDRESS, abi } from '../constants/nftCollectionConstants'
@@ -237,10 +238,7 @@ export default function NFTMint() {
             <div className={`${styles.banner} fw-bold d-flex align-items-center justify-content-center`}>Presale ends in {hoursLeftPresale} hours</div> :
             "" 
           }
-          <nav className={styles.nav}>
-            <img src="/logo.png" alt="energydao-logo" />
-            {/* <a href="https://www.flaticon.com/free-icons/environment" title="environment icons">Environment icons created by Freepik - Flaticon</a> */}
-          </nav>
+          <Nav />
           <main className={`container ${styles.main}`}>
           <div className="row align-items-md-center justify-content-sm-center">
             <div className="col">
