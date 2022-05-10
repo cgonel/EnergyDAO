@@ -10,19 +10,19 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function NFTMint() {
     const [walletConnected, setWalledConnected] = useState(false)
     const [presaleStarted, setPresaleStarted] = useState()
-    const [presaleEnded, setPresaleEnded] = useState()
+    const [presaleEnded, setPresaleEnded] = useState(false)
     const [isOwner, setIsOwner] = useState(false)
-    const [timeLeftPresale, setTimeLeftPresale] = useState()
-    const [mintedNFTs, setMintedNFTs] = useState()
+    const [hoursLeftPresale, setHoursLeftPresale] = useState()
+    const [mintedNFTs, setMintedNFTs] = useState(0)
     const [loading, setLoading] = useState()
 
     const getProviderOrSigner = async (needSigner = false) => {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         const signer = provider.getSigner()
         const { chainId } = await provider.getNetwork()
-        // if (chainId !== 4){
-        //     window.alert("Connect to the rinkeby network")
-        // }
+        if (chainId !== 4){
+            window.alert("Connect to the rinkeby network")
+        }
         return needSigner ? signer : provider;
     }
 
@@ -129,15 +129,11 @@ export default function NFTMint() {
         const provider = await getProviderOrSigner()
         const nftContract = new ethers.Contract(NFTCOLLECTION_ADDRESS, abi, provider)
         const {_hex} = await nftContract.presaleEnd()
-        const endPresale = Number("0x627a040a")
-        // const date = (new Date()).getTime()
-        const date = new Date().getTime()
-        const timeLeft = new Date(endPresale - date)
-        // console.log(date)
-        // console.log(_hex)
-        console.log(endPresale - date)
-        console.log(timeLeft)
-        // console.log(timeLeft.getHours())
+        const endPresale = Number(_hex) * 1000
+        const date = new Date()
+        const timeLeft = endPresale - date
+        const hoursLeft = Math.floor(timeLeft / (60*60*1000))
+        setHoursLeftPresale(hoursLeft)
       } catch (err) {
         console.error(err)
       }
@@ -160,6 +156,7 @@ export default function NFTMint() {
         await tx.wait()
         setLoading(false)
         notifyMint()
+        setMintedNFTs(prevState => prevState + 1)
       } catch (err) {
         console.error(err)
       }
@@ -174,6 +171,7 @@ export default function NFTMint() {
         await tx.wait()
         setLoading(false)
         notifyMint()
+        setMintedNFTs(prevState => prevState + 1)
       } catch (err) {
         console.error(err)
       }
@@ -233,9 +231,12 @@ export default function NFTMint() {
             <link rel="icon" href="/logo.png" />
             {/* <a href="https://www.flaticon.com/free-icons/environment" title="environment icons">Environment icons created by Freepik - Flaticon</a> */}
           </Head>
-          {/* <button onClick={notifyPresaleStarted}>Notify!</button> */}
           <ToastContainer />
-          {<div className={`${styles.banner} fw-bold d-flex align-items-center justify-content-center`}>Presale ends in {timeLeftPresale} hours</div>}
+          { 
+            walletConnected && presaleStarted && !presaleEnded ? 
+            <div className={`${styles.banner} fw-bold d-flex align-items-center justify-content-center`}>Presale ends in {hoursLeftPresale} hours</div> :
+            "" 
+          }
           <nav className={styles.nav}>
             <img src="/logo.png" alt="energydao-logo" />
             {/* <a href="https://www.flaticon.com/free-icons/environment" title="environment icons">Environment icons created by Freepik - Flaticon</a> */}
