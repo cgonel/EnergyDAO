@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-// import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.css'
 import Nav from './Components/Nav'
 // import { useState, useEffect } from 'react'
 // import { ethers } from 'ethers'
@@ -20,7 +20,8 @@ export default function Home() {
                 {/* <a href="https://www.flaticon.com/free-icons/environment" title="environment icons">Environment icons created by Freepik - Flaticon</a> */}
             </Head>
             <Nav />
-            <main className="vh-100">
+            {/* <main className="vh-100"> */}
+            <main className={`${styles.main} vh-100`}>
             </main>
         </div>
     )
