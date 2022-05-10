@@ -10,9 +10,18 @@ EnergyDAO's goal is to make renewable energy the main source of the world's elec
 
 ---
 
-### Contracts
-Whitelist: 0xB245608616641041876f3a9589576881337FE65D
+## Contracts
+### Whitelist
+Allows 20 addresses to sign up to the whitelist.
 
+Deployed: 0xB245608616641041876f3a9589576881337FE65D
+
+### NFT Collection
+Mint 20 unique NFTs. The whitelisted addresses get a presale with a reduced price and a guaranteed NFT.
+
+Deployed: 0x2c25d88920D2bd4D93317F3738998460EFE1efD7
+
+---
 ### Technologies Used
 - Hardhat
 - Ethers.js
@@ -21,6 +30,7 @@ Whitelist: 0xB245608616641041876f3a9589576881337FE65D
 - Bootstrap
 - React-toastify
 - Alchemy
+- IPFS / Pinata
 <!-- - Solhint
 - Solidity-coverage -->
 

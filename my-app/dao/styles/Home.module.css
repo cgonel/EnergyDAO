@@ -1,16 +1,6 @@
-.nav {
-    margin: 20px 30px;
-}
-
-.nav img {
-    width: 50px;
-    height: 50px;
-}
-
 .main {
-    margin-top: 50px;
-}
-
-.main img {
-    height: 400px;
+    background-image: url("../public/background.jpg");
+    background-position: center;
+    background-size: cover;
+    /* background-color:red; */
 }

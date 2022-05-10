@@ -1,0 +1,26 @@
+.nav {
+    margin: 20px 30px;
+}
+
+.nav img {
+    width: 50px;
+    height: 50px;
+}
+
+.nav a {
+    text-decoration: none;
+}
+
+.main {
+    margin-top: 50px;
+}
+
+.main img {
+    height: 400px;
+}
+
+.banner {
+    height: 40px;
+    background-color: #09a66d;
+    color: #fff;
+}
