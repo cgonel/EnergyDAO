@@ -6,7 +6,7 @@ According to Our World in Data, in 2019, [64% of our electricity came from fossi
 EnergyDAO's goal is to make renewable energy the main source of the world's electricity.
 <!-- HOW  -->
   <!--network of IOT  -->
-  <!--infrastructure to replace the old & provide for those who hadn't  -->
+  <!--infrastructure to replace the old & provide for those who don't have  -->
 
 ---
 
@@ -21,18 +21,16 @@ Mint 20 unique NFTs. The whitelisted addresses get a presale with a reduced pric
 
 Deployed: 0x2c25d88920D2bd4D93317F3738998460EFE1efD7
 
+[OpenSea Collection](https://testnets.opensea.io/collection/bioengineered-animals)
+
 ---
 ### Technologies Used
 - Hardhat
 - Ethers.js
 - Metamask
 - Next.js
-- Bootstrap
-- React-toastify
 - Alchemy
-- IPFS / Pinata
-<!-- - Solhint
-- Solidity-coverage -->
+- IPFS
 
 ### References
 [Reference - Why Are Fossil Fuels Bad for the Environment?](https://www.reference.com/science/fossil-fuels-bad-environment-ed81a473564fab02)
