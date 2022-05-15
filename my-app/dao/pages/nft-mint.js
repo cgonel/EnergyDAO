@@ -214,13 +214,15 @@ export default function NFTMint() {
           </button>
         )
       } else if (presaleStarted && presaleEnded) {
-        <button 
-          type="button" 
-          className="btn btn-success"
-          onClick={mint}
-        >
-          Mint
-        </button>
+        return (
+          <button 
+            type="button" 
+            className="btn btn-success"
+            onClick={mint}
+          >
+            Mint
+          </button>
+        )
       }
     }
 
