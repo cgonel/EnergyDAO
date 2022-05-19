@@ -23,14 +23,20 @@ Deployed: 0x2c25d88920D2bd4D93317F3738998460EFE1efD7
 
 [OpenSea Collection](https://testnets.opensea.io/collection/bioengineered-animals)
 
+### DAO
+
+Allows NFT holders to create proposals and vote on them.
+Alternatively, [Snapshot](https://snapshot.org/#/) could be used.
+
+Deployed:
+
 ---
 ### Technologies Used
 - Hardhat
 - Ethers.js
-- Metamask
 - Next.js
 - Alchemy
-- IPFS
+- IPFS / Pinata
 
 ### References
 [Reference - Why Are Fossil Fuels Bad for the Environment?](https://www.reference.com/science/fossil-fuels-bad-environment-ed81a473564fab02)
