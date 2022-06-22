@@ -32,5 +32,8 @@ Deployed: 0x2c25d88920D2bd4D93317F3738998460EFE1efD7
 - Alchemy
 - IPFS
 
+### Improvements
+- For wallet integration, I would use Context to make the all the components aware of the autheticated user. 
+
 ### References
 [Reference - Why Are Fossil Fuels Bad for the Environment?](https://www.reference.com/science/fossil-fuels-bad-environment-ed81a473564fab02)
